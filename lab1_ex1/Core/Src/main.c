@@ -72,7 +72,10 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-  int state=0;
+  int state =0;
+  int red_time 		=5; // thoi gian den do
+  int green_time 	=3; // thoi gian den xanh
+  int yellow_time 	=2; // thoi gian den vang
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -93,27 +96,43 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-	  //tat ca 2 den
-	  HAL_GPIO_WritePin(LED_RED_GPIO_Port,LED_RED_Pin, SET);
-	  HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port,LED_YELLOW_Pin, SET);
+	  //tat tat ca cac den
+	  HAL_GPIO_WritePin(LED_RED_GPIO_Port,LED_RED_Pin, RESET);
+	  HAL_GPIO_WritePin(LED_GREEN_GPIO_Port,LED_GREEN_Pin, RESET);
+	  HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port,LED_YELLOW_Pin, RESET);
 	  switch(state){
-	  	  case 1://bat den do
-	  		  HAL_GPIO_WritePin(LED_RED_GPIO_Port,LED_RED_Pin, RESET);
-	  		  state=0;
-	  		  break;
-	  	  case 0://bat den vang
-	  	  	  HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port,LED_YELLOW_Pin, RESET);
-	  	  	  state=1;
-	  	  	  break;
-	  	  default:
-	  		  break;
+	  case 0://trang thai den do
+		  red_time--;
+		  HAL_GPIO_WritePin(LED_RED_GPIO_Port,LED_RED_Pin, SET); //bat den
+		  if(red_time==0){
+			  state=1;//chuyen sang den vang sau khi het den do
+			  red_time=5;//reset thoi gian
+		  }
+		  break;
+	  case 1://trang thai den vang
+		  yellow_time--;
+		  HAL_GPIO_WritePin(LED_YELLOW_GPIO_Port,LED_YELLOW_Pin, SET);//bat den
+	  	  if(yellow_time==0){
+	  		  state=2;//chuyen sang den xanh sau khi het den vang
+	  		  yellow_time=2;//reset thoi gian
 	  	  }
-	  	  HAL_Delay(1000);
-
+	  	  break;
+	  case 2://trang thai den xanh
+		  green_time--;
+		  HAL_GPIO_WritePin(LED_GREEN_GPIO_Port,LED_GREEN_Pin, SET);//bat den
+		  if(green_time==0){
+	  		  state=0;//chuyen sang den do sau khi het den xanh
+	  		  green_time=3;//reset thoi gian
+		  }
+		  break;
+	  default:
+		  break;
 	  }
+	  HAL_Delay(1000);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
+}
 
 /**
   * @brief System Clock Configuration
@@ -164,10 +183,10 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOA_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, LED_RED_Pin|LED_YELLOW_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, LED_RED_Pin|LED_YELLOW_Pin|LED_GREEN_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : LED_RED_Pin LED_YELLOW_Pin */
-  GPIO_InitStruct.Pin = LED_RED_Pin|LED_YELLOW_Pin;
+  /*Configure GPIO pins : LED_RED_Pin LED_YELLOW_Pin LED_GREEN_Pin */
+  GPIO_InitStruct.Pin = LED_RED_Pin|LED_YELLOW_Pin|LED_GREEN_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
