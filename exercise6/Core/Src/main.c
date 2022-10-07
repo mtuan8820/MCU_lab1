@@ -53,57 +53,8 @@ static void MX_GPIO_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-int state[12]={0};
-void testing(){
 
-}
-void clearAllClock(){
-HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, RESET);
-HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, RESET);
-HAL_GPIO_WritePin(LED3_GPIO_Port, LED3_Pin, RESET);
-HAL_GPIO_WritePin(LED4_GPIO_Port, LED4_Pin, RESET);
-HAL_GPIO_WritePin(LED5_GPIO_Port, LED5_Pin, RESET);
-HAL_GPIO_WritePin(LED6_GPIO_Port, LED6_Pin, RESET);
-HAL_GPIO_WritePin(LED7_GPIO_Port, LED7_Pin, RESET);
-HAL_GPIO_WritePin(LED8_GPIO_Port, LED8_Pin, RESET);
-HAL_GPIO_WritePin(LED9_GPIO_Port, LED9_Pin, RESET);
-HAL_GPIO_WritePin(LED10_GPIO_Port, LED10_Pin, RESET);
-HAL_GPIO_WritePin(LED11_GPIO_Port, LED11_Pin, RESET);
-HAL_GPIO_WritePin(LED12_GPIO_Port, LED12_Pin, RESET);
-for(int i=0;i<12;i++) state[i]=0;
-}
-void setNumberOnClock(int num){
-	if (num<0 || num >=12) return;
-		if (state[num]==1) return;
-		if (num==0) {HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, SET); state[num]=1;}
-		if (num==1) {HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, SET); state[num]=1;}
-		if (num==2) {HAL_GPIO_WritePin(LED3_GPIO_Port, LED3_Pin, SET); state[num]=1;}
-		if (num==3) {HAL_GPIO_WritePin(LED4_GPIO_Port, LED4_Pin, SET); state[num]=1;}
-		if (num==4) {HAL_GPIO_WritePin(LED5_GPIO_Port, LED5_Pin, SET); state[num]=1;}
-		if (num==5) {HAL_GPIO_WritePin(LED6_GPIO_Port, LED6_Pin, SET); state[num]=1;}
-		if (num==6) {HAL_GPIO_WritePin(LED7_GPIO_Port, LED7_Pin, SET); state[num]=1;}
-		if (num==7) {HAL_GPIO_WritePin(LED8_GPIO_Port, LED8_Pin, SET); state[num]=1;}
-		if (num==8) {HAL_GPIO_WritePin(LED9_GPIO_Port, LED9_Pin, SET); state[num]=1;}
-		if (num==9) {HAL_GPIO_WritePin(LED10_GPIO_Port, LED10_Pin, SET); state[num]=1;}
-		if (num==10) {HAL_GPIO_WritePin(LED11_GPIO_Port, LED11_Pin, SET); state[num]=1;}
-		if (num==11) {HAL_GPIO_WritePin(LED12_GPIO_Port, LED12_Pin, SET); state[num]=1;}
-}
-void clearNumberOnClock(int num){
-	if (num<0 || num >=12) return;
-	if (state[num]==0) return;
-	if (num==0) {HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, RESET); state[num]=0;}
-	if (num==1) {HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, RESET); state[num]=0;}
-	if (num==2) {HAL_GPIO_WritePin(LED3_GPIO_Port, LED3_Pin, RESET); state[num]=0;}
-	if (num==3) {HAL_GPIO_WritePin(LED4_GPIO_Port, LED4_Pin, RESET); state[num]=0;}
-	if (num==4) {HAL_GPIO_WritePin(LED5_GPIO_Port, LED5_Pin, RESET); state[num]=0;}
-	if (num==5) {HAL_GPIO_WritePin(LED6_GPIO_Port, LED6_Pin, RESET); state[num]=0;}
-	if (num==6) {HAL_GPIO_WritePin(LED7_GPIO_Port, LED7_Pin, RESET); state[num]=0;}
-	if (num==7) {HAL_GPIO_WritePin(LED8_GPIO_Port, LED8_Pin, RESET); state[num]=0;}
-	if (num==8) {HAL_GPIO_WritePin(LED9_GPIO_Port, LED9_Pin, RESET); state[num]=0;}
-	if (num==9) {HAL_GPIO_WritePin(LED10_GPIO_Port, LED10_Pin, RESET); state[num]=0;}
-	if (num==10) {HAL_GPIO_WritePin(LED11_GPIO_Port, LED11_Pin, RESET); state[num]=0;}
-	if (num==11) {HAL_GPIO_WritePin(LED12_GPIO_Port, LED12_Pin, RESET); state[num]=0;}
-}
+
 /* USER CODE END 0 */
 
 /**
@@ -135,26 +86,69 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
-  int min=0;
-  int sec=0;
-  int hour=5;
+  int state=1;
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	 //reset bieu dien
-	 clearAllClock();
+	 //tat ta ca den
+	  HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, RESET);
+	  HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, RESET);
+	  HAL_GPIO_WritePin(LED3_GPIO_Port, LED3_Pin, RESET);
+	  HAL_GPIO_WritePin(LED4_GPIO_Port, LED4_Pin, RESET);
+	  HAL_GPIO_WritePin(LED5_GPIO_Port, LED5_Pin, RESET);
+	  HAL_GPIO_WritePin(LED6_GPIO_Port, LED6_Pin, RESET);
+	  HAL_GPIO_WritePin(LED7_GPIO_Port, LED7_Pin, RESET);
+	  HAL_GPIO_WritePin(LED8_GPIO_Port, LED8_Pin, RESET);
+	  HAL_GPIO_WritePin(LED9_GPIO_Port, LED9_Pin, RESET);
+	  HAL_GPIO_WritePin(LED10_GPIO_Port, LED10_Pin, RESET);
+	  HAL_GPIO_WritePin(LED11_GPIO_Port, LED11_Pin, RESET);
+	  HAL_GPIO_WritePin(LED12_GPIO_Port, LED12_Pin, RESET);
 	 //dem thoi gian
-	 sec++;
-	 if(sec>=60){sec=0;min++;}
-	 if(min>=60){min=0;hour++;}
-	 if(hour>12){hour=1;}
-	 // bieu dien thoi gian
-	 setNumberOnClock(sec/5);
-	 setNumberOnClock(min/5);
-	 setNumberOnClock(hour);
+	 switch(state){
+	 	 case 1:
+	 		HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, SET);
+	 		break;
+	 	 case 2:
+	 		HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, SET);
+	 		break;
+	 	 case 3:
+	 		HAL_GPIO_WritePin(LED3_GPIO_Port, LED3_Pin, SET);
+	 		break;
+	 	 case 4:
+	 		HAL_GPIO_WritePin(LED4_GPIO_Port, LED4_Pin, SET);
+	 		break;
+	 	 case 5:
+	 		HAL_GPIO_WritePin(LED5_GPIO_Port, LED5_Pin, SET);
+	 		break;
+	 	 case 6:
+	 		HAL_GPIO_WritePin(LED6_GPIO_Port, LED6_Pin, SET);
+	 		break;
+	 	 case 7:
+	 		HAL_GPIO_WritePin(LED7_GPIO_Port, LED7_Pin, SET);
+	 		break;
+	 	 case 8:
+	 		HAL_GPIO_WritePin(LED8_GPIO_Port, LED8_Pin, SET);
+	 		break;
+	 	 case 9:
+	 		HAL_GPIO_WritePin(LED9_GPIO_Port, LED9_Pin, SET);
+	 		break;
+	 	 case 10:
+	 		HAL_GPIO_WritePin(LED10_GPIO_Port, LED10_Pin, SET);
+	 		break;
+	 	 case 11:
+	 		HAL_GPIO_WritePin(LED11_GPIO_Port, LED11_Pin, SET);
+	 		break;
+	 	 case 12:
+	 		HAL_GPIO_WritePin(LED12_GPIO_Port, LED12_Pin, SET);
+	 		break;
+	 	 default:
+	 		 break;
+	 }
+	 state++;
+	 if(state>=13) state=1;
 	 ///////////////
 	 HAL_Delay(500);
     /* USER CODE END WHILE */
