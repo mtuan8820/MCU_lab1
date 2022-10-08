@@ -133,7 +133,9 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
-  int status=1;
+  int sec=55;//second
+  int min=59;//minute
+  int hour=8;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -141,13 +143,20 @@ int main(void)
   while (1)
   {
 
-	 for (int n=1;n<13;n++)setNumberOnClock(n);//bat tat ca den
-	 //test thu chuc nang cua clearNumberOnClock
-	 if (status<=12) clearNumberOnClock(status);
-	 status++;
-	 if(status>=13) status=1;
-	 ///////////////
-	 HAL_Delay(500);
+	  	 //tat tat ca den led
+	  	 clearAllClock();
+	  	 //dem thoi gian
+	  	 sec++;
+	  	 if(sec>=60){sec=0;min++;}
+	  	 if(min>=60){min=0;hour++;}
+	  	 if(hour>12){hour=1;}
+	  	 // bieu dien thoi gian tren led
+	  	 setNumberOnClock(sec/5);
+	  	 if (min==0) {setNumberOnClock(12);}
+	  	 else setNumberOnClock(min/5);
+	  	 setNumberOnClock(hour);
+	  	 ///////////////
+	  	 HAL_Delay(1000);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
